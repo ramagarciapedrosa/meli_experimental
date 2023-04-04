@@ -1,7 +1,8 @@
 import { test } from "@playwright/test";
-import { CountriesListPage } from "../pages/countriesListPage";
-import { CountriesListLocators } from "../pages/countriesListLocators";
-import { CountriesListCheckers } from "../pages/countriesListCheckers";
+import { CountriesListPage } from "../modules/countriesListPage";
+import { CountriesList } from "../modules/countriesList";
+import { CountriesListLocators } from "../modules/countriesListLocators";
+import { CountriesListCheckers } from "../modules/countriesListCheckers";
 
 test.describe("test countries pages", () => {
   test("verify number of countries", async ({ page }) => {
@@ -15,7 +16,7 @@ test.describe("test countries pages", () => {
     );
   });
 
-  const countries = CountriesListPage.getCountriesIds();
+  const countries = CountriesList.getCountriesIds();
 
   countries.forEach((country) => {
     test(`verify ${country}'s page language`, async ({ page }) => {
@@ -24,7 +25,9 @@ test.describe("test countries pages", () => {
       const countriesListLocators = new CountriesListLocators(page);
 
       await countriesPage.goto();
-      await countriesPage.clickOnCountry(country);
+      await countriesPage.clickOnCountry(
+        countriesListLocators.locateCountry(country)
+      );
       await countriesCheckers.checkLanguage(
         country,
         countriesListLocators.body

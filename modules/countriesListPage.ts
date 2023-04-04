@@ -1,4 +1,4 @@
-import { Page } from "@playwright/test";
+import { Page, Locator } from "@playwright/test";
 import { CountriesList } from "./countriesList";
 
 export class CountriesListPage extends CountriesList {
@@ -10,7 +10,7 @@ export class CountriesListPage extends CountriesList {
     await this.page.goto("https://www.mercadolibre.com/");
   }
 
-  async clickOnCountry(countryId: string) {
-    await this.locateCountry(countryId).click();
+  async clickOnCountry(country: Locator) {
+    await country.click();
   }
 }

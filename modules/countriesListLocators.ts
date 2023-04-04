@@ -14,7 +14,11 @@ export class CountriesListLocators extends CountriesList {
   private async getCountriesLocators() {
     const countries = CountriesList.getCountriesIds();
     for (const countryId in countries) {
-      this.countries.push(this.page.locator(`#${countryId}`));
+      this.countries.push(this.locateCountry(countryId));
     }
+  }
+
+  locateCountry(countryId: string) {
+    return this.page.locator(`#${countryId}`);
   }
 }

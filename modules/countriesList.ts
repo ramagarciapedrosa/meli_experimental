@@ -3,14 +3,11 @@ import { Countries } from "./countriesEnum";
 
 export class CountriesList {
   protected page: Page;
-  protected _numOfCountries = 18;
+  protected _numOfCountries: number;
 
   constructor(page: Page) {
     this.page = page;
-  }
-
-  protected locateCountry(countryId: string) {
-    return this.page.locator(`#${countryId}`);
+    this._numOfCountries = Object.values(Countries).length;
   }
 
   static getCountriesIds() {
