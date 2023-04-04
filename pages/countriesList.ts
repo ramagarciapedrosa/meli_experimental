@@ -1,76 +1,19 @@
-import { Page, Locator, expect } from "@playwright/test";
-
-enum Countries {
-  Argentina = "AR",
-  Boliva = "BO",
-  Brasil = "BR",
-  Chile = "CL",
-  Colombia = "CO",
-  CostaRica = "CR",
-  Dominicana = "DO",
-  Ecuador = "EC",
-  Guatemala = "GT",
-  Honduras = "HN",
-  Mexico = "MX",
-  Nicaragua = "NI",
-  Panama = "PA",
-  Paraguay = "PY",
-  Peru = "PE",
-  ElSalvador = "SV",
-  Uruguay = "UY",
-  Venezuela = "VE",
-}
+import { Page } from "@playwright/test";
+import { Countries } from "./countriesEnum";
 
 export class CountriesList {
-  private page: Page;
-  private countries: Locator[] = [];
-  private numOfCountries: number;
+  protected page: Page;
+  protected _numOfCountries = 18;
 
   constructor(page: Page) {
     this.page = page;
-    this.numOfCountries = 0;
-    this.generateLocators();
   }
 
-  // Inner functions
-
-  private generateLocators() {
-    for (const country in Countries) {
-      this.countries.push(this.locateCountry(country));
-      this.numOfCountries++;
-    }
-  }
-
-  private locateCountry(countryId: string) {
+  protected locateCountry(countryId: string) {
     return this.page.locator(`#${countryId}`);
   }
 
-  // Actions
-
-  async goto() {
-    await this.page.goto("https://www.mercadolibre.com/");
-  }
-
-  async clickOnCountry(countryId: string) {
-    await this.locateCountry(countryId).click();
-  }
-
-  // Checkers
-
-  async checkLocatorsCount() {
-    await expect(this.page.getByRole("link")).toHaveCount(this.numOfCountries);
-  }
-
-  async checkLanguage(countryId: string) {
-    await expect(this.page.locator("body")).toHaveAttribute(
-      "data-country",
-      countryId
-    );
-  }
-
-  // Utils
-
-  getCountriesIds() {
+  static getCountriesIds() {
     return Object.values(Countries);
   }
 }

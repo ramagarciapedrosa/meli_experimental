@@ -1,20 +1,34 @@
 import { test } from "@playwright/test";
-import { CountriesList } from "../pages/countriesList";
+import { CountriesListPage } from "../pages/countriesListPage";
+import { CountriesListLocators } from "../pages/countriesListLocators";
+import { CountriesListCheckers } from "../pages/countriesListCheckers";
 
-test("verify number of countries", async ({ page }) => {
-  const countriesList = new CountriesList(page);
-  await countriesList.goto();
-  await countriesList.checkLocatorsCount();
-});
+test.describe("test countries pages", () => {
+  test("verify number of countries", async ({ page }) => {
+    const countriesListPage = new CountriesListPage(page);
+    const countriesListCheckers = new CountriesListCheckers(page);
+    const countriesListLocators = new CountriesListLocators(page);
 
-test("verify corresponding language per country", async ({ page }) => {
-  const countriesList = new CountriesList(page);
-  const countries = countriesList.getCountriesIds();
+    await countriesListPage.goto();
+    await countriesListCheckers.checkLocatorsCount(
+      countriesListLocators.countries
+    );
+  });
 
-  // Possible abstraction
-  for (const countryId of countries) {
-    await countriesList.goto();
-    await countriesList.clickOnCountry(countryId);
-    await countriesList.checkLanguage(countryId);
-  }
+  const countries = CountriesListPage.getCountriesIds();
+
+  countries.forEach((country) => {
+    test(`verify ${country}'s page language`, async ({ page }) => {
+      const countriesPage = new CountriesListPage(page);
+      const countriesCheckers = new CountriesListCheckers(page);
+      const countriesListLocators = new CountriesListLocators(page);
+
+      await countriesPage.goto();
+      await countriesPage.clickOnCountry(country);
+      await countriesCheckers.checkLanguage(
+        country,
+        countriesListLocators.body
+      );
+    });
+  });
 });
