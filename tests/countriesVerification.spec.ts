@@ -12,7 +12,7 @@ test("verify corresponding language per country", async ({ page }) => {
   const countries = countriesList.getCountriesIds();
 
   // Possible abstraction
-  for await (const countryId of countries) {
+  for (const countryId of countries) {
     await countriesList.goto();
     await countriesList.clickOnCountry(countryId);
     await countriesList.checkLanguage(countryId);

@@ -24,7 +24,7 @@ enum Countries {
 export class CountriesList {
   private page: Page;
   private countries: Locator[] = [];
-  private numOfCountries = 18;
+  private _numOfCountries = 18;
 
   constructor(page: Page) {
     this.page = page;
@@ -56,7 +56,7 @@ export class CountriesList {
   // Checkers
 
   async checkLocatorsCount() {
-    await expect(this.page.getByRole("link")).toHaveCount(this.numOfCountries);
+    await expect(this.page.getByRole("link")).toHaveCount(this._numOfCountries);
   }
 
   async checkLanguage(countryId: string) {
