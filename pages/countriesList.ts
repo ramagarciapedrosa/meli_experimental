@@ -24,23 +24,25 @@ enum Countries {
 export class CountriesList {
   private page: Page;
   private countries: Locator[] = [];
-  private _numOfCountries = 18;
+  private numOfCountries: number;
 
   constructor(page: Page) {
     this.page = page;
+    this.numOfCountries = 0;
     this.generateLocators();
   }
 
   // Inner functions
 
-  private locateCountry(countryId: string) {
-    return this.page.locator(`#${countryId}`);
-  }
-
   private generateLocators() {
     for (const country in Countries) {
       this.countries.push(this.locateCountry(country));
+      this.numOfCountries++;
     }
+  }
+
+  private locateCountry(countryId: string) {
+    return this.page.locator(`#${countryId}`);
   }
 
   // Actions
@@ -56,7 +58,7 @@ export class CountriesList {
   // Checkers
 
   async checkLocatorsCount() {
-    await expect(this.page.getByRole("link")).toHaveCount(this._numOfCountries);
+    await expect(this.page.getByRole("link")).toHaveCount(this.numOfCountries);
   }
 
   async checkLanguage(countryId: string) {
